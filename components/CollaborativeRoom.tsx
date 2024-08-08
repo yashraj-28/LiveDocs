@@ -11,6 +11,7 @@ import { currentUser } from '@clerk/nextjs/server';
 import Image from 'next/image';
 import { updateDocument } from '@/lib/actions/room.actions';
 import Loader from './Loader';
+import ShareModal from './ShareModal';
 
 const CollaborativeRoom = ({roomId, roomMetadata, currentUserType, users}: CollaborativeRoomProps) => {
 
@@ -18,7 +19,7 @@ const CollaborativeRoom = ({roomId, roomMetadata, currentUserType, users}: Colla
   const [loading, setLoading] = useState(false);
   const [documentTitle, setDocumentTitle] = useState(roomMetadata.title);
   const containerRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   //const currentUserType = 'editor';
 
   const updateTitleHandler = async (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -108,6 +109,12 @@ const CollaborativeRoom = ({roomId, roomMetadata, currentUserType, users}: Colla
 
                 <div className="flex w-full flex-1 justify-end gap-2 sm:gap-3">
                   <ActiveCollaborators/>
+                  <ShareModal 
+                    roomId={roomId}
+                    collaborators={users}
+                    creatorId={roomMetadata.creatorId}
+                    currentUserType={currentUserType}
+                  />
                   <SignedOut>
                     <SignInButton />
                   </SignedOut>
